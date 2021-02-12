@@ -1,8 +1,4 @@
-A critical look at the identifiability of causal effect using deep latent variable models - Supplementary Material
-
-The actual Supplementary Material PDF is the CriticalLookAtCausalIdentifiabilityDLVM_supplementary.pdf. 
-
-The code:
+# A critical look at the identifiability of causal effect using deep latent variable models 
 
 The project is structured into notebooks that run the experiments and plot the results, and to Python files containing
 most of the actual code. Most of the experiments use the definition of CEVAE in CEVAE.py, which is a very flexible
