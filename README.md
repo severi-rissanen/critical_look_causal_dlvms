@@ -1,8 +1,6 @@
-A critical look at the identifiability of causal effect using deep latent variable models - Supplementary Material
+# A critical look at the identifiability of causal effect using deep latent variable models 
 
-The actual Supplementary Material PDF is the CriticalLookAtCausalIdentifiabilityDLVM_supplementary.pdf. 
-
-The code:
+Note that this repository is not completely clean yet: Especially the IHDP experiment won't run as is. You will need to add the file ihdp_npci_1-100.train.npz from  https://www.fredjo.com/ to the folder data/IHDP. 
 
 The project is structured into notebooks that run the experiments and plot the results, and to Python files containing
 most of the actual code. Most of the experiments use the definition of CEVAE in CEVAE.py, which is a very flexible
