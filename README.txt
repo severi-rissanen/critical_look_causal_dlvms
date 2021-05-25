@@ -8,13 +8,14 @@ The project is structured into notebooks that run the experiments and plot the r
 most of the actual code. Most of the experiments use the definition of CEVAE in CEVAE.py, which is a very flexible
 approach. In the MNIST experiment, we use a different Pytorch model defined in imageCEVAE.py. 
 
-The six experiments are in the following files (Corresponding to the order in the paper):
+The seven experiments are in the following files (Corresponding to the order in the paper):
 -running_lineargaussian_data.ipynb
 -running_binary_data.ipynb
 -running_irrelevantnoise_data.ipynb
 -running_copyproxy_data.ipynb
 -running_IHDP_data.ipynb
 -running_MNIST_data.ipynb
+-running_Twins_data.ipynb
 
 The Python file cevaetools.py contains lots of the most relevant code for the experiments, and imagedatatools.py
 as well for the MNIST data. The other Python files may be referenced in some specific parts of code. In particular,

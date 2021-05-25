@@ -192,8 +192,8 @@ def kld_loss_binary(z_pred, pz_logit):
     return kld
 
 def get_losses(z_mean, z_std, x_pred, x_std, t_pred, t_std, y_pred, y_std,
-                  x, t, y, x_mode, t_mode, y_mode):
-    kld = kld_loss(z_mean,z_std)
+                  x, t, y, x_mode, t_mode, y_mode, kl_scaling=1):
+    kld = kld_loss(z_mean,z_std)*kl_scaling
     x_loss = 0
     t_loss = 0
     y_loss = 0
@@ -263,7 +263,7 @@ def train_model(device, plot_curves, print_logs,
               p_x_z_nn_layers=3, p_x_z_nn_width=10,
               q_z_nn_layers=3, q_z_nn_width=10,
               t_mode=2, y_mode=2, x_mode=[0], ty_separate_enc=False, 
-              z_mode=0, x_loss_scaling=1, common_stds=False, collect_params=False):
+              z_mode=0, x_loss_scaling=1, common_stds=False, collect_params=False, kl_scaling_schedule=None):
     
     model = CEVAE(x_dim, z_dim, device, p_y_zt_nn_layers,
         p_y_zt_nn_width, p_t_z_nn_layers, p_t_z_nn_width,
@@ -277,6 +277,16 @@ def train_model(device, plot_curves, print_logs,
     
     modelparams = []
     
+    kl_scalings = []
+    if kl_scaling_schedule:
+        for i in range(num_epochs):
+            index = 0
+            for j in range(len(kl_scaling_schedule[0])):
+                if i/num_epochs >= kl_scaling_schedule[0][j]:
+                    index = j
+            kl_scaling = ((kl_scaling_schedule[0][index+1]-i/num_epochs)*kl_scaling_schedule[1][index] + (i/num_epochs-kl_scaling_schedule[0][index])*kl_scaling_schedule[1][index+1])/(kl_scaling_schedule[0][index+1]-kl_scaling_schedule[0][index])
+            kl_scalings.append(kl_scaling)
+    
     for epoch in range(num_epochs):
         #i = 0
         epoch_loss = 0
@@ -286,13 +296,19 @@ def train_model(device, plot_curves, print_logs,
         epoch_y_loss = 0
         if print_logs:
             print("Epoch {}:".format(epoch))
+            if kl_scaling_schedule:
+                print("KL scaling: {}".format(kl_scalings[epoch]))
         for data in train_loader:
             x = data['X'].to(device)
             t = data['t'].to(device)
             y = data['y'].to(device)
             z_pred, z_std, x_pred, x_std, t_pred, t_std, y_pred, y_std = model(x,t,y)
             if z_mode == 0:
-                kld, x_loss, t_loss, y_loss = get_losses(z_pred, z_std, x_pred, x_std, t_pred, t_std, y_pred, y_std, x, t, y,
+                if kl_scaling_schedule is not None:
+                    kld, x_loss, t_loss, y_loss = get_losses(z_pred, z_std, x_pred, x_std, t_pred, t_std, y_pred, y_std, x, t, y,
+                                                        x_mode, t_mode, y_mode, kl_scalings[epoch])
+                else:
+                    kld, x_loss, t_loss, y_loss = get_losses(z_pred, z_std, x_pred, x_std, t_pred, t_std, y_pred, y_std, x, t, y,
                                                         x_mode, t_mode, y_mode)
             elif z_mode == 2:
                 kld, x_loss, t_loss, y_loss = get_losses_binary(z_pred, x_pred, x_std, t_pred, t_std, y_pred, y_std, x, t, y,
