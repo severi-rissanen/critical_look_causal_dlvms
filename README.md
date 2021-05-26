@@ -1,4 +1,4 @@
-# A critical look at the identifiability of causal effect using deep latent variable models 
+# A critical look at the consistency of causal estimation using deep latent variable models 
 
 Note that this repository is not completely clean yet: Especially the IHDP experiment won't run as is. You will need to add the file ihdp_npci_1-100.train.npz from  https://www.fredjo.com/ to the folder data/IHDP. 
 
