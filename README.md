@@ -1,7 +1,5 @@
 # A critical look at the consistency of causal estimation using deep latent variable models 
 
-Note that this repository is not completely clean yet: Especially the IHDP experiment won't run as is. You will need to add the file ihdp_npci_1-100.train.npz from  https://www.fredjo.com/ to the folder data/IHDP. 
-
 The project is structured into notebooks that run the experiments and plot the results, and to Python files containing
 most of the actual code. Most of the experiments use the definition of CEVAE in CEVAE.py, which is a very flexible
 approach. In the MNIST experiment, we use a different Pytorch model defined in imageCEVAE.py. 
@@ -20,7 +18,9 @@ as well for the MNIST data. The other Python files may be referenced in some spe
 the binarytoydata.py, lineartoydata.py, imagedata.py, contain code for generating different data sets. datagenVAE.py
 and GANmodel.py contain the models for generating new data for the IHDP and MNIST experiments. 
 
-I didn't include the actual data or most of the trained models, as those take up lots of space, but the folders
+We didn't include the actual data or most of the trained models, as those take up lots of space, but the folders
 GANmodels and datageneratormodels contain pretrained models for generating mode MNIST and IHDP data, respectively.
 The results of the experiments are saved in the data/ folder, which contains the data generating parameters and 
 such used in the experiments, if they are not written out in the notebooks. 
+
+Note that the IHDP experiment won't run as is. You will need to add the file ihdp_npci_1-100.train.npz from  https://www.fredjo.com/ to the folder data/IHDP. 
